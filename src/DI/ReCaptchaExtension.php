@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Contributte\ReCaptcha\DI;
 
@@ -8,24 +8,19 @@ use Nette\DI\CompilerExtension;
 use Nette\PhpGenerator\ClassType;
 use Nette\Utils\Validators;
 
-/**
- * @author Milan Felix Sulc <sulcmil@gmail.com>
- */
 final class ReCaptchaExtension extends CompilerExtension
 {
 
-	/** @var array */
+	/** @var mixed[] */
 	private $defaults = [
-		'siteKey' => NULL,
-		'secretKey' => NULL,
+		'siteKey' => null,
+		'secretKey' => null,
 	];
 
 	/**
 	 * Register services
-	 *
-	 * @return void
 	 */
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$config = $this->validateConfig($this->defaults);
 		$builder = $this->getContainerBuilder();
@@ -34,16 +29,14 @@ final class ReCaptchaExtension extends CompilerExtension
 		Validators::assertField($config, 'secretKey', 'string');
 
 		$builder->addDefinition($this->prefix('provider'))
-			->setClass(ReCaptchaProvider::class, [$config['siteKey'], $config['secretKey']]);
+			->setType(ReCaptchaProvider::class)
+			->setArguments([$config['siteKey'], $config['secretKey']]);
 	}
 
 	/**
 	 * Decorate initialize method
-	 *
-	 * @param ClassType $class
-	 * @return void
 	 */
-	public function afterCompile(ClassType $class)
+	public function afterCompile(ClassType $class): void
 	{
 		$method = $class->getMethod('initialize');
 		$method->addBody(sprintf('%s::bind($this->getService(?));', ReCaptchaBinding::class), [$this->prefix('provider')]);

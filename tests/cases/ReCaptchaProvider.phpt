@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Tests;
 
@@ -16,37 +16,34 @@ require __DIR__ . '/../bootstrap.php';
 final class ControlMock extends BaseControl
 {
 
-	/**
-	 * @return string
-	 */
-	public function getValue()
+	public function getValue(): string
 	{
 		return 'test';
 	}
 
 }
 
-test(function () {
+test(function (): void {
 	$key = 'key';
-	$validator = new ReCaptchaProvider($key, NULL);
+	$validator = new ReCaptchaProvider($key, null);
 
 	$response = $validator->validate('test');
 	Assert::type(ReCaptchaResponse::class, $response);
 
 	Assert::false($response->isSuccess());
-	Assert::notEqual(NULL, $response->getError());
+	Assert::notEqual(null, $response->getError());
 });
 
-test(function () {
+test(function (): void {
 	$key = 'key';
-	$validator = new ReCaptchaProvider($key, NULL);
+	$validator = new ReCaptchaProvider($key, null);
 
 	Assert::false($validator->validateControl(new ControlMock()));
 });
 
-test(function () {
+test(function (): void {
 	$key = 'key';
-	$validator = new ReCaptchaProvider($key, NULL);
+	$validator = new ReCaptchaProvider($key, null);
 
 	Assert::false($validator->validateControl(new ControlMock()));
 });

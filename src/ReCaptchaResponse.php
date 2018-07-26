@@ -1,56 +1,40 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Contributte\ReCaptcha;
 
-/**
- * @author Milan Felix Sulc <sulcmil@gmail.com>
- */
 final class ReCaptchaResponse
 {
 
 	// Error code list
-	const ERROR_CODE_MISSING_INPUT_SECRET = 'missing-input-secret';
-	const ERROR_CODE_INVALID_INPUT_SECRET = 'invalid-input-secret';
-	const ERROR_CODE_MISSING_INPUT_RESPONSE = 'missing-input-response';
-	const ERROR_CODE_INVALID_INPUT_RESPONSE = 'invalid-input-response';
-	const ERROR_CODE_UNKNOWN = 'unknow';
+	public const ERROR_CODE_MISSING_INPUT_SECRET = 'missing-input-secret';
+	public const ERROR_CODE_INVALID_INPUT_SECRET = 'invalid-input-secret';
+	public const ERROR_CODE_MISSING_INPUT_RESPONSE = 'missing-input-response';
+	public const ERROR_CODE_INVALID_INPUT_RESPONSE = 'invalid-input-response';
+	public const ERROR_CODE_UNKNOWN = 'unknow';
 
 	/** @var bool */
 	private $success;
 
-	/** @var string */
+	/** @var string|null */
 	private $error;
 
-	/**
-	 * @param bool $success
-	 * @param string $error
-	 */
-	public function __construct($success, $error = NULL)
+	public function __construct(bool $success, ?string $error = null)
 	{
-		$this->success = (bool) $success;
+		$this->success = $success;
 		$this->error = $error;
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function isSuccess()
+	public function isSuccess(): bool
 	{
 		return $this->success;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getError()
+	public function getError(): ?string
 	{
 		return $this->error;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return (string) $this->isSuccess();
 	}

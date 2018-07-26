@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Tests\DI;
 
@@ -14,9 +14,9 @@ use Tester\Assert;
 
 require __DIR__ . '/../../bootstrap.php';
 
-test(function () {
+test(function (): void {
 	$loader = new ContainerLoader(TEMP_DIR);
-	$class = $loader->load(function (Compiler $compiler) {
+	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('captcha', new ReCaptchaExtension());
 
 		$compiler->addConfig([
@@ -27,7 +27,7 @@ test(function () {
 		]);
 	}, 'SC' . time());
 
-	$container = new $class;
+	$container = new $class();
 	Assert::type(ReCaptchaProvider::class, $container->getByType(ReCaptchaProvider::class));
 	Assert::equal('foobar', $container->getByType(ReCaptchaProvider::class)->getSiteKey());
 });

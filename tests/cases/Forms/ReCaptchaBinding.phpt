@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Tests\Forms;
 
@@ -14,7 +14,7 @@ use Tester\Assert;
 
 require __DIR__ . '/../../bootstrap.php';
 
-test(function () {
+test(function (): void {
 	$provider = new ReCaptchaProvider('foo', 'bar');
 	ReCaptchaBinding::bind($provider);
 
@@ -28,7 +28,7 @@ test(function () {
 	Assert::same('foo', $recaptcha->getControl()->{'data-sitekey'});
 });
 
-test(function () {
+test(function (): void {
 	$provider = new ReCaptchaProvider('foo', 'bar');
 	ReCaptchaBinding::bind($provider);
 
@@ -37,22 +37,22 @@ test(function () {
 	Assert::same('My label', $recaptcha->getLabel()->getText());
 });
 
-test(function () {
+test(function (): void {
 	$provider = new ReCaptchaProvider('foo', 'bar');
 	ReCaptchaBinding::bind($provider);
 
 	$form = new Form();
-	$recaptcha = $form->addReCaptcha('recaptcha', 'My label', FALSE);
+	$recaptcha = $form->addReCaptcha('recaptcha', 'My label', false);
 	Assert::false($recaptcha->isRequired());
 });
 
 
-test(function () {
+test(function (): void {
 	$provider = new ReCaptchaProvider('foo', 'bar');
 	ReCaptchaBinding::bind($provider);
 
 	$form = new Form();
-	$recaptcha = $form->addReCaptcha('recaptcha', 'My label', FALSE, 'Are you bot-bot?');
+	$recaptcha = $form->addReCaptcha('recaptcha', 'My label', false, 'Are you bot-bot?');
 	Assert::false($recaptcha->isRequired());
 	$rules = $recaptcha->getRules()->getIterator();
 	$rule = end($rules);
