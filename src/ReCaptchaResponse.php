@@ -15,13 +15,16 @@ final class ReCaptchaResponse
 	/** @var bool */
 	private $success;
 
-	/** @var string|null */
-	private $error;
+	/** @var string[] */
+	private $errors;
 
-	public function __construct(bool $success, ?string $error = null)
+	/**
+	 * @param string[] $errors
+	 */
+	public function __construct(bool $success, ?array $errors = [])
 	{
 		$this->success = $success;
-		$this->error = $error;
+		$this->errors = $errors;
 	}
 
 	public function isSuccess(): bool
@@ -29,9 +32,12 @@ final class ReCaptchaResponse
 		return $this->success;
 	}
 
-	public function getError(): ?string
+	/**
+	 * @return string[]
+	 */
+	public function getErrors(): ?array
 	{
-		return $this->error;
+		return $this->errors;
 	}
 
 	public function __toString(): string

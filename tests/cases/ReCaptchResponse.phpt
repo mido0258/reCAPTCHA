@@ -22,8 +22,8 @@ test(function (): void {
 });
 
 test(function (): void {
-	$error = 'Some error';
+	$error = ['Some error'];
 	$response = new ReCaptchaResponse(false, $error);
 	Assert::false($response->isSuccess());
-	Assert::equal($error, $response->getError());
+	Assert::equal($error, $response->getErrors());
 });

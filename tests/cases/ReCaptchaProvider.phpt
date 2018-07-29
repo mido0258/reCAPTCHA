@@ -25,25 +25,25 @@ final class ControlMock extends BaseControl
 
 test(function (): void {
 	$key = 'key';
-	$validator = new ReCaptchaProvider($key, null);
+	$validator = new ReCaptchaProvider($key, '');
 
 	$response = $validator->validate('test');
 	Assert::type(ReCaptchaResponse::class, $response);
 
 	Assert::false($response->isSuccess());
-	Assert::notEqual(null, $response->getError());
+	Assert::notEqual(null, $response->getErrors());
 });
 
 test(function (): void {
 	$key = 'key';
-	$validator = new ReCaptchaProvider($key, null);
+	$validator = new ReCaptchaProvider($key, '');
 
 	Assert::false($validator->validateControl(new ControlMock()));
 });
 
 test(function (): void {
 	$key = 'key';
-	$validator = new ReCaptchaProvider($key, null);
+	$validator = new ReCaptchaProvider($key, '');
 
 	Assert::false($validator->validateControl(new ControlMock()));
 });

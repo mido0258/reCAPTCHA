@@ -19,9 +19,11 @@ final class FormMock extends Form
 {
 
 	/**
-	 * @return mixed
+	 * @param string|null $type
+	 * @param string|null $htmlName
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function getHttpData(?string $type = null, ?string $htmlName = null)
+	public function getHttpData($type = null, $htmlName = null): ?string
 	{
 		return $htmlName;
 	}
@@ -29,7 +31,7 @@ final class FormMock extends Form
 }
 
 test(function (): void {
-	$field = new ReCaptchaField(new ReCaptchaProvider('foobar', null));
+	$field = new ReCaptchaField(new ReCaptchaProvider('foobar', ''));
 	Assert::equal(['g-recaptcha' => true], $field->getControlPrototype()->getClass());
 
 	$field->getControlPrototype()->addClass('foo');
@@ -43,7 +45,7 @@ test(function (): void {
 	$form = new FormMock('form');
 
 	$fieldName = 'captcha';
-	$field = new ReCaptchaField(new ReCaptchaProvider('foobar', null));
+	$field = new ReCaptchaField(new ReCaptchaProvider('foobar', ''));
 	$form->addComponent($field, $fieldName);
 
 	Assert::type(Html::class, $field->getControl());
@@ -56,7 +58,7 @@ test(function (): void {
 
 	$fieldName = 'captcha';
 	$key = 'key';
-	$field = new ReCaptchaField(new ReCaptchaProvider('key', null));
+	$field = new ReCaptchaField(new ReCaptchaProvider('key', ''));
 	$form->addComponent($field, $fieldName);
 
 	Assert::equal($key, $field->getControl()->{'data-sitekey'});
@@ -67,7 +69,7 @@ test(function (): void {
 
 	$fieldName = 'captcha';
 	$label = 'label';
-	$field = new ReCaptchaField(new ReCaptchaProvider('key', null), $label);
+	$field = new ReCaptchaField(new ReCaptchaProvider('key', ''), $label);
 	$form->addComponent($field, $fieldName);
 
 	Assert::equal('', $field->getValue());

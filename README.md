@@ -20,7 +20,8 @@ Google reCAPTCHA implementation for [Nette Framework](https://github.com/nette/f
 
 | Branch | Composer   | Nette | PHP   | Readme |
 |--------|------------|------ | ----- | -------|
-| latest | ~3.0.0     | 2.4   | >=5.6 | -      |
+| latest | ~3.1.0     | 2.4   | >=7.1 | [README-3.x](https://github.com/contributte/reCAPTCHA/blob/master/.docs/README-3.x.md) |
+| latest | ~3.0.0     | 2.4   | >=5.6 | [README-3.x](https://github.com/contributte/reCAPTCHA/blob/master/.docs/README-3.x.md) |
 | 2.x    | ~2.1.0     | 2.4   | >=5.6 | [README-2.x](https://github.com/contributte/reCAPTCHA/blob/master/.docs/README-2.x.md) |
 | 1.6.x  | ~1.6.3     | 2.4   | >=5.6 | [README-1.6](https://github.com/contributte/reCAPTCHA/blob/master/.docs/README-1.6.md) |
 | 1.5.x  | ~1.5.2     | 2.3   | >=5.4 | [README-1.5](https://github.com/contributte/reCAPTCHA/blob/master/.docs/README-1.5.md) |
@@ -33,61 +34,29 @@ Add your site to the sitelist in [reCAPTCHA administration](https://www.google.c
 
 ![reCAPTCHA](https://rawgit.com/contributte/reCAPTCHA/master/.docs/recaptcha.png)
 
-## Installation
+## Maintainers
 
-The latest version is most suitable for **Nette 2.4** and **PHP >=5.6**.
+<table>
+  <tbody>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/f3l1x">
+            <img width="150" height="150" src="https://avatars2.githubusercontent.com/u/538058?v=3&s=150">
+        </a>
+        </br>
+        <a href="https://github.com/f3l1x">Milan Felix Šulc</a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/mabar">
+            <img width="150" height="150" src="https://avatars0.githubusercontent.com/u/20974277?s=400&v=4">
+        </a>
+        </br>
+        <a href="https://github.com/mabar">Marek Bartoš</a>
+      </td>
+    </tr>
+  <tbody>
+</table>
 
-```sh
-composer require contributte/recaptcha:~2.1.0
-```
+-----
 
-## Configuration
-
-```yaml
-extensions:
-    recaptcha: Contributte\ReCaptcha\DI\ReCaptchaExtension
-
-recaptcha:
-    secretKey: ***
-    siteKey: ***
-```
-
-## Usage
-
-```php
-use Nette\Application\UI\Form;
-
-protected function createComponentForm() 
-{
-    $form = new Form();
-    
-    $form->addReCaptcha('recaptcha', $label = 'Captcha')
-        ->setMessage('Are you bot?');
-    
-    $form->addReCaptcha('recaptcha', $label = 'Captcha', $required = FALSE)
-        ->setMessage('Are you bot?');
-    
-    $form->addReCaptcha('recaptcha', $label = 'Captcha', $required = TRUE, $message = 'Are you bot?');
-    
-    $form->onSuccess[] = function($form) {
-        dump($form->getValues());
-    }
-}
-```
-
-## Rendering
-
-```smarty
-<form n:name="myForm">
-	<div class="form-group">
-		<div n:name="recaptcha"></div>
-	</div>
-</form>
-```
-
-Be sure you place this script before `</body>` element.
-
-```html
-<!-- re-Captcha -->
-<script src='https://www.google.com/recaptcha/api.js'></script>
-```
+Thank you for testing, reporting and contributing.

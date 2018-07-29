@@ -6,8 +6,8 @@ use Nette\Forms\Controls\BaseControl;
 use Nette\SmartObject;
 
 /**
+ * @method onValidate(ReCaptchaProvider $provider, ?string $response)
  * @method onValidateControl(ReCaptchaProvider $provider, BaseControl $control)
- * @method onValidate(ReCaptchaProvider $provider, mixed $response)
  */
 class ReCaptchaProvider
 {
@@ -18,7 +18,7 @@ class ReCaptchaProvider
 	public const FORM_PARAMETER = 'g-recaptcha-response';
 	public const VERIFICATION_URL = 'https://www.google.com/recaptcha/api/siteverify';
 
-	/** @var callable[] function (ReCaptchaProvider $provider, mixed $response): void; */
+	/** @var callable[] function (ReCaptchaProvider $provider, ?string $response): void; */
 	public $onValidate = [];
 
 	/** @var callable[] function (ReCaptchaProvider $provider, BaseControl $control): void; */
@@ -41,10 +41,7 @@ class ReCaptchaProvider
 		return $this->siteKey;
 	}
 
-	/**
-	 * @param mixed $response
-	 */
-	public function validate($response): ?ReCaptchaResponse
+	public function validate(?string $response): ?ReCaptchaResponse
 	{
 		// Fire events!
 		$this->onValidate($this, $response);
@@ -53,17 +50,17 @@ class ReCaptchaProvider
 		$response = $this->makeRequest($response);
 
 		// Response is empty or failed..
-		if (empty($response)) return null;
+		if ($response === null) return null;
 
 		// Decode server answer (with key assoc reserved)
 		$answer = json_decode($response, true);
 
 		// Return response
-		if (trim($answer['success']) === true) {
+		if ($answer['success'] === true) {
 			return new ReCaptchaResponse(true);
 		}
 
-		return new ReCaptchaResponse(false, $answer['error-codes'] ?? null);
+		return new ReCaptchaResponse(false, $answer['error-codes'] ?? []);
 	}
 
 	public function validateControl(BaseControl $control): bool
@@ -83,19 +80,18 @@ class ReCaptchaProvider
 
 
 	/**
-	 * @param mixed $response
 	 * @return mixed
 	 */
-	protected function makeRequest($response, ?string $remoteIp = null)
+	protected function makeRequest(?string $response, ?string $remoteIp = null)
 	{
-		if (empty($response)) return null;
+		if ($response === null || $response === '') return null;
 
 		$params = [
 			'secret' => $this->secretKey,
 			'response' => $response,
 		];
 
-		if ($remoteIp) {
+		if ($remoteIp !== null) {
 			$params['remoteip'] = $remoteIp;
 		}
 
