@@ -3,6 +3,7 @@
 namespace Contributte\ReCaptcha\Forms;
 
 use Contributte\ReCaptcha\ReCaptchaProvider;
+use http\Exception\BadMessageException;
 use Nette\Forms\Controls\HiddenField;
 use Nette\Forms\Form;
 use Nette\InvalidStateException;
@@ -18,22 +19,22 @@ class InvisibleReCaptchaField extends HiddenField
 	private $provider;
 
 	/** @var bool */
-	private $configured = FALSE;
+	private $configured = false;
 
 	/**
 	 * @param ReCaptchaProvider $provider
 	 * @param string $message
 	 */
-	public function __construct(ReCaptchaProvider $provider, $message = NULL)
+	public function __construct(ReCaptchaProvider $provider, $message = null)
 	{
 		parent::__construct();
 		$this->provider = $provider;
 
-		$this->setOmitted(TRUE);
+		$this->setOmitted(true);
 		$this->control = Html::el('div');
 		$this->control->addClass('g-recaptcha');
 
-		if ($message !== NULL) {
+		if ($message !== null) {
 			$this->setMessage($message);
 		}
 	}
@@ -43,7 +44,7 @@ class InvisibleReCaptchaField extends HiddenField
 	 *
 	 * @return void
 	 */
-	public function loadHttpData()
+	public function loadHttpData(): void
 	{
 		parent::loadHttpData();
 		$this->setValue($this->getForm()->getHttpData(Form::DATA_TEXT, ReCaptchaProvider::FORM_PARAMETER));
@@ -55,15 +56,15 @@ class InvisibleReCaptchaField extends HiddenField
 	 */
 	public function setMessage($message)
 	{
-		if ($this->configured === TRUE) {
+		if ($this->configured === true) {
 			throw new InvalidStateException('Please call setMessage() only once or don\'t pass $message over addInvisibleReCaptcha()');
 		}
 
 		$this->addRule(function ($code) {
-			return $this->verify() === TRUE;
+			return $this->verify() === true;
 		}, $message);
 
-		$this->configured = TRUE;
+		$this->configured = true;
 
 		return $this;
 	}
@@ -73,7 +74,7 @@ class InvisibleReCaptchaField extends HiddenField
 	 */
 	public function verify()
 	{
-		return $this->provider->validateControl($this) === TRUE;
+		return $this->provider->validateControl($this) === true;
 	}
 
 	/**
@@ -82,14 +83,14 @@ class InvisibleReCaptchaField extends HiddenField
 	 * @param string $caption
 	 * @return Html
 	 */
-	public function getControl($caption = NULL)
+	public function getControl($caption = null): Html
 	{
 		$el = parent::getControl();
 		$el->addAttributes([
 			'data-sitekey' => $this->provider->getSiteKey(),
 			'data-size' => 'invisible',
 		]);
+
 		return $el;
 	}
-
 }

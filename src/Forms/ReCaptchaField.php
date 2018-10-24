@@ -44,7 +44,7 @@ class ReCaptchaField extends TextInput
 	 *
 	 * @return void
 	 */
-	public function loadHttpData()
+	public function loadHttpData():void
 	{
 		$this->setValue($this->getForm()->getHttpData(Form::DATA_TEXT, ReCaptchaProvider::FORM_PARAMETER));
 	}
@@ -81,7 +81,7 @@ class ReCaptchaField extends TextInput
 	 *
 	 * @return Html
 	 */
-	public function getControl()
+	public function getControl():Html
 	{
 		$el = parent::getControl();
 		$el->addAttributes([
